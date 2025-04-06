@@ -4,7 +4,7 @@
 
 Make your custom characters chat with you - just like playing a visual novel!
 
-[**简体中文**](README.md) | **English**
+[**简体中文**](../../README.md) | **English**
 
 ## Key Features
 
