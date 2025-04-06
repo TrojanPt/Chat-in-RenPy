@@ -1,8 +1,10 @@
 # Chat in RenPy 
 
-    基于 Ren'Py 引擎的 AI Chatbot 框架。
+> 基于 Ren'Py 引擎的 AI Chatbot 框架。
 
 让你的自定义角色陪着你聊天吧，就像是在推 Galgame 一样！
+
+**简体中文** | [**English**](./docs/en/README.md)
 
 
 ## 主要功能

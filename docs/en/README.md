@@ -1,6 +1,10 @@
 # Chat in RenPy
 
+> An AI Chatbot Framework Built with Ren'Py Engine.
+
 Make your custom characters chat with you - just like playing a visual novel!
+
+[**简体中文**](README.md) | **English**
 
 ## Key Features
 
