@@ -48,7 +48,7 @@
 2. 克隆仓库至Ren'Py项目仓库：
    ```bash
    cd D:\Path\to\RenPy\Projects\Directory
-   git clone https://github.com/yourusername/chat-in-renpy.git
+   git clone https://github.com/TrojanPt/Chat-in-RenPy.git
    ```
 
 
