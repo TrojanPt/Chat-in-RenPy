@@ -1,0 +1,46 @@
+{
+    "Character00":{
+        "id":"Character00's id",
+        "name":"Character00's name",
+        "bg_scene":{
+            "path": "relative/path/to/background/image",
+            "zoom": "number"
+        },
+        "fgimages":{
+            "normal":{
+                "path": "relative/path/to/normal/image",
+                "zoom": "number"
+            },
+            "mood01":{
+                "path": "relative/path/to/mood01/image",
+                "zoom": "number"
+            },
+            "mood02":{
+                "path": "relative/path/to/mood02/image",
+                "zoom": "number"
+            }
+        }
+    },
+    "Character01":{
+        "id":"Character01's id",
+        "name":"Character01's name",
+        "bg_scene":{
+            "path": "relative/path/to/background/image",
+            "zoom": "number"
+        },
+        "fgimages":{
+            "normal":{
+                "path": "relative/path/to/normal/image",
+                "zoom": "number"
+            },
+            "mood01":{
+                "path": "relative/path/to/mood01/image",
+                "zoom": "number"
+            },
+            "mood02":{
+                "path": "relative/path/to/mood02/image",
+                "zoom": "number"
+            }
+        }
+    }
+}
