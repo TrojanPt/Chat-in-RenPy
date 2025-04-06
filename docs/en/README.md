@@ -1,0 +1,52 @@
+# Chat in RenPy
+
+Make your custom characters chat with you - just like playing a visual novel!
+
+## Key Features
+
+- 💬 **Conversational Interaction**
+  - Supports OpenAI API-compatible LLM services (e.g. DeepSeek)
+  - Chinese input/output support
+  - Native Ren'Py save system for conversation history management
+
+- 📢 **Voice Synthesis**
+  - Supports OpenAI API-compatible TTS services
+  - Sentence-level synthesis balancing context coherence and low latency
+
+- 🎭 **Live2D-style Character Control**
+  - Automatic expression variations based on conversation content
+
+- ⚙️ **High Customizability**
+  - Manage character profiles via JSON configuration
+  - Configure LLM/TTS connections and select characters in OPTION menu
+
+## Quick Start
+1. Download the latest release
+  
+2. Edit `game/characters/characters.json` to configure characters. Refer to the schema documentation in the same directory
+  
+3. Prepare characters' fgimages and background images according to the paths specified in `characters.json`
+  
+4. Create role-playing prompt files for each character in `game/llm_prompt/roleplay_prompt/`. Filename must match character ID with `.txt` extension
+  
+5. Run `ChatinRenPy.exe`
+  
+6. Click **START CHAT** to begin. The system will validate configurations and guide you through setup if needed. Modify settings in **OPTION** menu
+
+## Contribution Guide
+
+1. Development Environment
+
+   - [Ren'Py](https://www.renpy.org/) SDK 8.3.6
+   - [Python](https://www.python.org/) 3.10.11
+
+   *Other versions may work but verify compatibility*
+
+2. Clone to Ren'Py projects directory:
+   ```bash
+   cd /path/to/renpy/projects
+   git clone https://github.com/yourusername/chat-in-renpy.git
+   ```
+
+## Important Note
+  As the **OWNER** is not a developer, you might encounter some eye-watering code. Please remove this project immediately if you experience any physical discomfort o(TヘTo)
