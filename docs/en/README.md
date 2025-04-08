@@ -17,7 +17,7 @@ Make your custom characters chat with you - just like playing a visual novel!
   - Supports OpenAI API-compatible TTS services
   - Sentence-level synthesis balancing context coherence and low latency
 
-- 🎭 **Live2D-style Character Control**
+- 🎭 **Character Fgimages Control System**
   - Automatic expression variations based on conversation content
 
 - ⚙️ **High Customizability**
