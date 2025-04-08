@@ -28,7 +28,7 @@
 ## 快速开始
 1. 下载发行版本
    
-2. 编辑文件 `game\characters\characters.json` 以配置对话人物信息。JSON FORMAT架构说明请参照同目录下的readme文件
+2. 编辑文件 `game\characters\characters.json` 以配置对话人物信息。JSON FORMAT架构说明请参照同目录下的[readme](./game/characters/readme.md)文件
    
 3. 根据 `characters.json` 中填入的配置信息完善人物立绘与背景图片。注意图片相对路径应与 `characters.json` 中的对应参数一致
    
