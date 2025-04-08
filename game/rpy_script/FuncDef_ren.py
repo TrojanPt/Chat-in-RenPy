@@ -8,8 +8,6 @@ import json
 import hashlib
 from pathlib import Path
 import os
-
-#########################
 import requests
 import threading
 
@@ -77,19 +75,19 @@ class TTS_api_connection:
         self._thread = threading.Thread(target=self._call_tts)
         self._thread.start()
 
-#########################
+
 def call_llm(messages, response_format=None):
     """发送messages到llm端，并流式返回生成的回复"""
     url = f'{preferences.llm_api_base_url}/chat/completions'
     
     payload = {
         "messages": messages,
-        "model": "deepseek-chat",      #"deepseek-chat","smegmma-deluxe-9b-v1"
+        "model": "deepseek-chat",                       # 你可以在这更改模型名称。但请注意，对于不支持JSON OUTPUT的模型，这会导致错误。此外，不同模型调用JSON OUTPUT的方式也可能不同。关于此的问题可能会在之后解决。
         "frequency_penalty": 0,
         "max_tokens": 1024,
         "presence_penalty": 0,
         "response_format": {
-            "type": "json_object"             #"json_object", "text"
+            "type": "json_object"             
         },
         "stop": None,
         "stream": True,                                 # 开启流式传输
