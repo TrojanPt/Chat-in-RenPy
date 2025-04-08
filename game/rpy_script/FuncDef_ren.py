@@ -6,12 +6,14 @@ init python:
 
 import json
 import hashlib
-from pathlib import Path
 import os
-import requests
 import threading
+from pathlib import Path
+import requests
 
-class LLM_api_connection:
+
+class LLMAPIConnection:
+    """处理与LLM API的流式连接"""
     def __init__(self, url, method, data, headers):
         self.url = url
         self.method = method
@@ -51,7 +53,8 @@ class LLM_api_connection:
         """判断请求是否结束"""
         return self._thread.is_alive() if self._thread else False
 
-class TTS_api_connection:
+class TTSAPIConnection:
+    """处理与TTS API的连接"""
     def __init__(self, url, method, data, headers):
         self.url = url
         self.method = method
@@ -62,7 +65,12 @@ class TTS_api_connection:
 
     def _call_tts(self):
         """发送请求至tts端"""
-        with requests.post(self.url, data=self.data, headers=self.headers, stream=True) as response:
+        with requests.post(
+            self.url, 
+            data=self.data, 
+            headers=self.headers, 
+            stream=True
+        ) as response:
             response.raise_for_status()
             for chunk in response.iter_content(chunk_size=1024):
                 if chunk:
@@ -77,7 +85,16 @@ class TTS_api_connection:
 
 
 def call_llm(messages, response_format=None):
-    """发送messages到llm端，并流式返回生成的回复"""
+    """
+    流式调用LLM API并生成响应内容
+    
+    Args:
+        messages: 对话消息列表
+        response_format: 响应格式要求
+        
+    Yields:
+        str: 增量生成的文本内容
+    """
     url = f'{preferences.llm_api_base_url}/chat/completions'
     
     payload = {
@@ -106,7 +123,7 @@ def call_llm(messages, response_format=None):
         'Accept': 'application/json',
         'Authorization': f'Bearer {preferences.llm_api_key}'
     }
-    response = LLM_api_connection(url, "POST", payload, headers)
+    response = LLMAPIConnection(url, "POST", payload, headers)
     response.start_stream()
     while response.is_alive():
         yield response.buffer                            #response.buffer存储已生成的对话内容
@@ -114,14 +131,23 @@ def call_llm(messages, response_format=None):
     return
 
 def call_tts(params):
-    """发送请求参数至tts端，并返回生成的音频"""
+    """
+    调用TTS API生成语音文件
+    
+    Args:
+        params: TTS请求参数
+        
+    Yields:
+        str: 生成状态或文件名
+    """
     url = f'{preferences.tts_api_base_url}/v1/audio/speech'
     
     headers = {
         "Authorization": f"Bearer {preferences.tts_api_key}",
         "Content-Type": "application/json"
     }
-
+    
+    # 创建语音文件存储目录
     SPEECH_DIR = str(config.basedir)+ "/game/audio/speech"
     SPEECH_DIR = os.path.normpath(SPEECH_DIR)
     os.makedirs(SPEECH_DIR, exist_ok=True)
@@ -136,10 +162,12 @@ def call_tts(params):
         yield name
         return
     
+    # 创建TTS连接
     payload = json.dumps(params).encode("utf-8")
-    response = TTS_api_connection(url, "POST", payload, headers)
+    response = TTSAPIConnection(url, "POST", payload, headers)
     tts_queue.add(response)
     tts_queue.refresh()
+
     with open(file_path, "wb") as f:
         while True:
             if response.buffer:
@@ -155,7 +183,16 @@ def call_tts(params):
     return
 
 def cut_response(content, cut):
-    """每生成完成一句话，向TTS端发送该句话"""
+    """
+    在指定位置后寻找句子分界点
+    
+    Args:
+        content: 待分割的文本内容
+        cut_pos: 开始查找的起始位置
+        
+    Returns:
+        int: 下一个分割点位置
+    """
     punds = {'.', ';', '?', '!', '。', '？', '！', ';'}
     for i in range(cut, len(content)):
         if content[i] in punds:
@@ -188,17 +225,20 @@ class TTS_Queue:
             self.queue[0][1] = 1
 
 def parse_response(response):
-    '''处理llm的结构化输出,输出为一个list
-    
-    list = [
-        {mood是否生成完毕: bool}, 
-        {mood的值,若mood未生成完毕则返回已经生成了的部分},
-        {saying_ja是否生成完毕: bool},
-        {saying_ja的值,若saying_ja未生成完毕则返回已经生成了的部分},
-        {saying_zh是否生成完毕: bool},
-        {saying_zh的值,若saying_zh未生成完毕则返回已经生成了的部分}
+    """
+    解析LLM的结构化响应
+
+    Args:
+        response: 待解析的JSON字符串（可能不完整）
+        
+    Returns:
+        list: 解析结果结构:
+        [
+            mood完成状态, mood值,
+            saying_ja完成状态, saying_ja值,
+            saying_zh完成状态, saying_zh值
         ]
-        '''
+    """
     import re
     def process_key(key, s):
         # 检查键是否存在
