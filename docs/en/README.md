@@ -48,8 +48,8 @@ Make your custom characters chat with you - just like playing a visual novel!
 
 2. Clone to Ren'Py projects directory:
    ```bash
-   cd /path/to/renpy/projects
-   git clone https://github.com/yourusername/chat-in-renpy.git
+    cd D:\Path\to\RenPy\Projects\Directory
+    git clone https://github.com/TrojanPt/Chat-in-RenPy.git
    ```
 
 ## Important Note
