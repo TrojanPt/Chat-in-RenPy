@@ -1,0 +1,62 @@
+{
+    "title": "GPT-SoVITS Voice Configuration Schema",
+    "description": "语音模型配置规范",
+    "type": "object",
+    "patternProperties": {
+      "^[A-Za-z0-9_]+$": {
+        "type": "object",
+        "properties": {
+          "tts_infer": {
+            "type": "string",
+            "description": "模型配置文件路径(YAML格式)",
+            "examples": ["D:\\GPT-SoVITS\\Models\\Yanami_Anna\\tts_infer.yaml"]
+          },
+          "ref_audio_path": {
+            "type": "string",
+            "description": "主参考音频文件路径",
+            "format": "uri-reference",
+            "examples": ["D:\\GPT-SoVITS\\Models\\Yanami_Anna\\Voice_examples\\example.wav"]
+          },
+          "prompt_lang": {
+            "type": "string",
+            "description": "参考文本语言代码",
+            "enum": ["zh", "ja", "en", "auto"]
+          },
+          "prompt_text": {
+            "type": "string",
+            "description": "参考音频对应文本内容"
+          },
+          "aux_ref_audio_paths": {
+            "type": "array",
+            "description": "辅助参考音频路径列表",
+            "items": {
+              "type": "string",
+              "format": "uri-reference"
+            },
+            "minItems": 0,
+            "examples": [
+              [
+                "D:\\GPT-SoVITS\\Models\\Yanami_Anna\\Voice_examples\\sample1.wav",
+                "D:\\GPT-SoVITS\\Models\\Yanami_Anna\\Voice_examples\\sample2.wav",
+                "D:\\GPT-SoVITS\\Models\\Yanami_Anna\\Voice_examples\\sample3.wav"
+              ]
+            ]
+          }
+        },
+        "required": ["tts_infer", "ref_audio_path", "prompt_lang", "prompt_text"],
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false,
+    "examples": [
+      {
+        "Yanami_Anna": {
+          "tts_infer": "path/to/tts_infer.yaml",
+          "ref_audio_path": "path/to/reference.wav",
+          "prompt_lang": "ja",
+          "prompt_text": "示例文本",
+          "aux_ref_audio_paths": ["path/to/aux1.wav"]
+        }
+      }
+    ]
+  }
