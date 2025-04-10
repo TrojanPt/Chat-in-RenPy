@@ -5,113 +5,9 @@ label start:
     $ renpy.run(Preference("auto-forward", "enable"))
     $ renpy.run(Preference("auto-forward time", 1))
 
-    show screen loading_pray
-
-    # 检查
-    nvl_narrator "正在进行初始化..."
-
-    nvl_narrator "正在加载对话角色信息..."
-    $ refresh_list("chat_character")
-
-    if not preferences.chat_characters_dict:
-        $ renpy.run(Preference("auto-forward", "disable"))
-        nvl_narrator "获取对话角色信息失败！请检查game\characters\characters.json文件 (Click to continue)"
+    call check
+    if not _return:
         return
-    if not preferences.chat_character:
-        $ renpy.run(Preference("auto-forward", "disable"))
-        nvl_narrator "未选择对话角色 (Click to continue)"
-        call screen parm_choice("chat_character", 'chat_characters_dict', "选择对话角色", True)
-        while not preferences.chat_character:
-            if _return == 'refresh':
-                call screen parm_choice("chat_character", 'chat_characters_dict', "选择对话角色", True)
-            elif _return == 'return':
-                return
-            elif _return == 'confirm' and not preferences.chat_character:
-                return
-    elif not preferences.chat_characters_dict.get(preferences.chat_character):
-        $ renpy.run(Preference("auto-forward", "disable"))
-        nvl_narrator "对话角色不存在，请重新选择对话角色或检查game\characters\characters.json文件 (Click to continue)"
-        call screen parm_choice("chat_character", 'chat_characters_dict', "选择对话角色", True)
-        while not preferences.chat_characters_dict.get(preferences.chat_character):
-            if _return == 'refresh':
-                call screen parm_choice("chat_character", 'chat_characters_dict', "选择对话角色", True)
-            elif _return == 'return':
-                return
-            elif _return == 'confirm' and not preferences.chat_characters_dict.get(preferences.chat_character):
-                return
-    else:
-        nvl_narrator " {b}=>{/b} 当前对话角色为 {b}[preferences.chat_characters_dict[preferences.chat_character]['name']]{/b}"
-    $ renpy.run(Preference("auto-forward", "enable"))
-    $ renpy.run(Preference("auto-forward time", 1))
-
-    nvl_narrator "正在加载大语言模型设置..."
-    if not preferences.llm_api_base_url:
-        $ renpy.run(Preference("auto-forward", "disable"))
-        nvl_narrator "未设置大语言模型api接口base_url (Click to continue)"
-        call screen parm_edit("llm_api_base_url", "设置llm_api_base_url", True)
-        if not preferences.llm_api_base_url:
-            return
-    $ renpy.run(Preference("auto-forward", "enable"))
-    $ renpy.run(Preference("auto-forward time", 1))
-    if not preferences.llm_api_key:
-        $ renpy.run(Preference("auto-forward", "disable"))
-        nvl_narrator "未设置大语言模型api接口密匙 (Click to continue)"
-        call screen parm_edit("llm_api_key", "设置llm_api_key", True)
-        if not preferences.llm_api_key:
-            return
-    $ renpy.run(Preference("auto-forward", "enable"))
-    $ renpy.run(Preference("auto-forward time", 1))
-
-    nvl_narrator "正在加载文本转语音模型设置..."
-    if not preferences.tts_api_base_url:
-        $ renpy.run(Preference("auto-forward", "disable"))
-        nvl_narrator "未设置文本转语音模型api接口base_url (Click to continue)"
-        call screen parm_edit("tts_api_base_url", "设置tts_api_base_url", True)
-        if not preferences.tts_api_base_url:
-            return
-    $ renpy.run(Preference("auto-forward", "enable"))
-    $ renpy.run(Preference("auto-forward time", 1))
-    if not preferences.tts_api_key:
-        $ renpy.run(Preference("auto-forward", "disable"))
-        nvl_narrator "未设置文本转语音模型api接口密匙 (Click to continue)"
-        call screen parm_edit("tts_api_key", "设置tts_api_key", True)
-        if not preferences.tts_api_key:
-            return
-    $ renpy.run(Preference("auto-forward", "enable"))
-    $ renpy.run(Preference("auto-forward time", 1))
-    if not preferences.tts_model:
-        $ renpy.run(Preference("auto-forward", "disable"))
-        nvl_narrator "未选择文本转语音模型 (Click to continue)"
-        call screen parm_choice("tts_model", 'tts_model_list', "选择tts_model", True)
-        while not preferences.tts_model:
-            if _return == 'refresh':
-                call screen parm_choice("tts_model", 'tts_model_list', "选择tts_model", True)
-            elif _return == 'return':
-                return
-            elif _return == 'confirm' and not preferences.tts_model:
-                return
-    else:
-        nvl_narrator " {b}=>{/b} 当前文本转语音模型为 {b}[preferences.tts_model]{/b}"
-    $ renpy.run(Preference("auto-forward", "enable"))
-    $ renpy.run(Preference("auto-forward time", 1))
-    if not preferences.tts_voice:
-        $ renpy.run(Preference("auto-forward", "disable"))
-        nvl_narrator "未选择文本转语音模型所用的语音 (Click to continue)"
-        call screen parm_choice("tts_voice", 'tts_voice_list', "选择tts_voice", True)
-        while not preferences.tts_voice:
-            if _return == 'refresh':
-                call screen parm_choice("tts_voice", 'tts_voice_list', "选择tts_voice", True)
-            elif _return == 'return':
-                return
-            elif _return == 'confirm' and not preferences.tts_voice:
-                return
-    else:
-        nvl_narrator " {b}=>{/b} 当前文本转语音模型所用的语音为 {b}[preferences.tts_voice]{/b}"
-    $ renpy.run(Preference("auto-forward", "enable"))
-    $ renpy.run(Preference("auto-forward time", 1))
-    pause 0.5
-
-    hide screen loading_pray
 
     # 将 preference object 下与该次对话相关的 value 存入对话界面下的变量中，以保证存档时存入该次对话的参数配置
     # 请注意与LLM、TTS API接口相关的参数不作存档
@@ -298,3 +194,115 @@ label whether_continue:
             pass
     ai "再见！"
     return
+
+label check:
+
+    show screen loading_pray
+
+    # 检查
+    nvl_narrator "正在进行初始化..."
+
+    nvl_narrator "正在加载对话角色信息..."
+    $ refresh_list("chat_character")
+
+    if not preferences.chat_characters_dict:
+        $ renpy.run(Preference("auto-forward", "disable"))
+        nvl_narrator "获取对话角色信息失败！请检查game\characters\characters.json文件 (Click to continue)"
+        return False
+    if not preferences.chat_character:
+        $ renpy.run(Preference("auto-forward", "disable"))
+        nvl_narrator "未选择对话角色 (Click to continue)"
+        call screen parm_choice("chat_character", 'chat_characters_dict', "选择对话角色", True)
+        while not preferences.chat_character:
+            if _return == 'refresh':
+                call screen parm_choice("chat_character", 'chat_characters_dict', "选择对话角色", True)
+            elif _return == 'return':
+                return False
+            elif _return == 'confirm' and not preferences.chat_character:
+                return False
+    elif not preferences.chat_characters_dict.get(preferences.chat_character):
+        $ renpy.run(Preference("auto-forward", "disable"))
+        nvl_narrator "对话角色不存在，请重新选择对话角色或检查game\characters\characters.json文件 (Click to continue)"
+        call screen parm_choice("chat_character", 'chat_characters_dict', "选择对话角色", True)
+        while not preferences.chat_characters_dict.get(preferences.chat_character):
+            if _return == 'refresh':
+                call screen parm_choice("chat_character", 'chat_characters_dict', "选择对话角色", True)
+            elif _return == 'return':
+                return False
+            elif _return == 'confirm' and not preferences.chat_characters_dict.get(preferences.chat_character):
+                return False
+    else:
+        nvl_narrator " {b}=>{/b} 当前对话角色为 {b}[preferences.chat_characters_dict[preferences.chat_character]['name']]{/b}"
+    $ renpy.run(Preference("auto-forward", "enable"))
+    $ renpy.run(Preference("auto-forward time", 1))
+
+    nvl_narrator "正在加载大语言模型设置..."
+    if not preferences.llm_api_base_url:
+        $ renpy.run(Preference("auto-forward", "disable"))
+        nvl_narrator "未设置大语言模型api接口base_url (Click to continue)"
+        call screen parm_edit("llm_api_base_url", "设置llm_api_base_url", True)
+        if not preferences.llm_api_base_url:
+            return False
+    $ renpy.run(Preference("auto-forward", "enable"))
+    $ renpy.run(Preference("auto-forward time", 1))
+    if not preferences.llm_api_key:
+        $ renpy.run(Preference("auto-forward", "disable"))
+        nvl_narrator "未设置大语言模型api接口密匙 (Click to continue)"
+        call screen parm_edit("llm_api_key", "设置llm_api_key", True)
+        if not preferences.llm_api_key:
+            return False
+    $ renpy.run(Preference("auto-forward", "enable"))
+    $ renpy.run(Preference("auto-forward time", 1))
+
+    nvl_narrator "正在加载文本转语音模型设置..."
+    if not preferences.tts_api_base_url:
+        $ renpy.run(Preference("auto-forward", "disable"))
+        nvl_narrator "未设置文本转语音模型api接口base_url (Click to continue)"
+        call screen parm_edit("tts_api_base_url", "设置tts_api_base_url", True)
+        if not preferences.tts_api_base_url:
+            return False
+    $ renpy.run(Preference("auto-forward", "enable"))
+    $ renpy.run(Preference("auto-forward time", 1))
+    if not preferences.tts_api_key:
+        $ renpy.run(Preference("auto-forward", "disable"))
+        nvl_narrator "未设置文本转语音模型api接口密匙 (Click to continue)"
+        call screen parm_edit("tts_api_key", "设置tts_api_key", True)
+        if not preferences.tts_api_key:
+            return False
+    $ renpy.run(Preference("auto-forward", "enable"))
+    $ renpy.run(Preference("auto-forward time", 1))
+    if not preferences.tts_model:
+        $ renpy.run(Preference("auto-forward", "disable"))
+        nvl_narrator "未选择文本转语音模型 (Click to continue)"
+        call screen parm_choice("tts_model", 'tts_model_list', "选择tts_model", True)
+        while not preferences.tts_model:
+            if _return == 'refresh':
+                call screen parm_choice("tts_model", 'tts_model_list', "选择tts_model", True)
+            elif _return == 'return':
+                return False
+            elif _return == 'confirm' and not preferences.tts_model:
+                return False 
+    else:
+        nvl_narrator " {b}=>{/b} 当前文本转语音模型为 {b}[preferences.tts_model]{/b}"
+    $ renpy.run(Preference("auto-forward", "enable"))
+    $ renpy.run(Preference("auto-forward time", 1))
+    if not preferences.tts_voice:
+        $ renpy.run(Preference("auto-forward", "disable"))
+        nvl_narrator "未选择文本转语音模型所用的语音 (Click to continue)"
+        call screen parm_choice("tts_voice", 'tts_voice_list', "选择tts_voice", True)
+        while not preferences.tts_voice:
+            if _return == 'refresh':
+                call screen parm_choice("tts_voice", 'tts_voice_list', "选择tts_voice", True)
+            elif _return == 'return':
+                return False
+            elif _return == 'confirm' and not preferences.tts_voice:
+                return False
+    else:
+        nvl_narrator " {b}=>{/b} 当前文本转语音模型所用的语音为 {b}[preferences.tts_voice]{/b}"
+    $ renpy.run(Preference("auto-forward", "enable"))
+    $ renpy.run(Preference("auto-forward time", 1))
+    pause 0.5
+
+    hide screen loading_pray
+
+    return True
