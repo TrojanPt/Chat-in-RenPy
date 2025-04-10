@@ -9,12 +9,13 @@ Make your custom characters chat with you - just like playing a visual novel!
 ## Key Features
 
 - 💬 **Conversational Interaction**
-  - Supports OpenAI API-compatible LLM services (e.g. DeepSeek)
+  - Supports **OpenAI API-compatible LLM** services (e.g. **DeepSeek**)
   - Chinese input/output support
   - Native Ren'Py save system for conversation history management
 
 - 📢 **Voice Synthesis**
-  - Supports OpenAI API-compatible TTS services
+  - Supports **OpenAI API-compatible TTS** services
+  - Through the middle-tier proxy, it is compatible with the locally deployed **GPT-SoVITS TTS** service. See the [readme file](../../tools/OpenAI-TTS-Proxy_for_GPT-SoVITS/readme.md) under the `tools\OpenAI-TTS-Proxy_for_GPT-SoVITS` directory for details.
   - Sentence-level synthesis balancing context coherence and low latency
 
 - 🎭 **Character Fgimages Control System**
