@@ -10,12 +10,13 @@
 ## 主要功能
 
 - 💬 **对话交互**
-  - 支持OpenAI API兼容的LLM服务（如DeepSeek等）
+  - 支持 **OpenAI API兼容的LLM** 服务（如 **DeepSeek** 等）
   - 支持中文输入与输出
   - 使用Ren'Py原生的存档系统进行历史对话管理
 
 - 📢 **语音合成**
-  - 支持OpenAI TTS API兼容的TTS服务
+  - 支持 **OpenAI TTS API兼容的TTS** 服务
+  - 通过中间层代理，兼容本地部署的 **GPT-SoVITS TTS** 服务。详见 `tools\OpenAI-TTS-Proxy_for_GPT-SoVITS` 目录下的 [readme](./tools/OpenAI-TTS-Proxy_for_GPT-SoVITS/readme.md) 文件。
   - 按句切分进行语音合成，兼顾语义连贯与低滞后性
 
 - 🎭 **对话中立绘控制系统**
